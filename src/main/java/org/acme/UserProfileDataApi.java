@@ -1,6 +1,8 @@
 package org.acme;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+import org.jboss.resteasy.reactive.PartFilename;
+import org.jboss.resteasy.reactive.PartType;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.BeanParam;
@@ -20,33 +22,29 @@ public interface UserProfileDataApi {
     @POST
     @Path("/base64")
     @Consumes({"multipart/form-data"})
-    void postBase64Data(
-            @BeanParam PostBase64DataMultipartForm multipartForm
-    );
+    void postBase64Data(@BeanParam PostBase64DataMultipartForm multipartForm);
 
     class PostBase64DataMultipartForm {
         @FormParam("encodedFile")
-        @org.jboss.resteasy.reactive.PartFilename("encodedFileFile")
-        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        @PartFilename("encodedFileFile")
+        @PartType(MediaType.APPLICATION_OCTET_STREAM)
         public String encodedFile;
     }
     @POST
     @Path("/user-profile-data")
     @Consumes({"multipart/form-data"})
-    void postUserProfileData(
-            @BeanParam PostUserProfileDataMultipartForm multipartForm
-    );
+    void postUserProfileData(@BeanParam PostUserProfileDataMultipartForm multipartForm);
 
     class PostUserProfileDataMultipartForm {
         @FormParam("id")
-        @org.jboss.resteasy.reactive.PartType(MediaType.TEXT_PLAIN)
+        @PartType(MediaType.TEXT_PLAIN)
         public UUID id;
         @FormParam("address")
-        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_JSON)
+        @PartType(MediaType.APPLICATION_JSON)
         public Address address;
         @FormParam("profileImage")
-        @org.jboss.resteasy.reactive.PartFilename("profileImageFile")
-        @org.jboss.resteasy.reactive.PartType(MediaType.APPLICATION_OCTET_STREAM)
+        @PartFilename("profileImageFile")
+        @PartType(MediaType.APPLICATION_OCTET_STREAM)
         public File profileImage;
     }
 }

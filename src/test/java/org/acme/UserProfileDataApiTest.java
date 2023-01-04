@@ -69,7 +69,7 @@ class UserProfileDataApiTest {
     }
 
     @Test
-    public void testUploadBase64EncodedFile() {
+    void testUploadBase64EncodedFile() {
         String sentData = "Some data that's sent!";
         String base64Data = Base64.getEncoder().encodeToString(sentData.getBytes(StandardCharsets.UTF_8));
         UserProfileDataApi.PostBase64DataMultipartForm requestBody = new UserProfileDataApi.PostBase64DataMultipartForm();
