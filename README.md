@@ -6,7 +6,42 @@ The repository has two branches:
 
 ## How to reproduce
 
-Run `mvn clean verify`
+Run `mvn clean verify`.
+
+For the `resteasy-classic` branch, both tests will pass.
+
+For the `main` branch, `UserProfileDataApiTest.testUploadBase64EncodedFile`, which is the test that uses `String` instead of `File` will fail.
+
+```bash
+[ERROR] Failures: 
+[ERROR]   UserProfileDataApiTest.testUploadBase64EncodedFile:83 No requests exactly matched. Most similar request was:  expected:<
+POST
+/base64
+
+
+[encodedFile]
+
+Content-Disposition [contains] : filename=
+Content-Type: application/octet-stream
+
+U29tZSBkYXRhIHRoYXQncyBzZW50IQ==
+
+[/encodedFile]
+> but was:<
+POST
+/base64
+
+
+[encodedFile]
+
+Content-Disposition: form-data; name="encodedFile"
+Content-Type: text/plain; charset=UTF-8
+
+U29tZSBkYXRhIHRoYXQncyBzZW50IQ==
+
+[/encodedFile]
+>
+```
 
 -----------
 
