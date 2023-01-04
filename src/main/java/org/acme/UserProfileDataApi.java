@@ -12,7 +12,6 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import java.io.File;
-import java.util.UUID;
 
 @Path("")
 @RegisterRestClient(baseUri="http://my.endpoint.com/api/v1", configKey="multipart_requests_yml")
@@ -27,21 +26,24 @@ public interface UserProfileDataApi {
     class PostBase64DataMultipartForm {
         @FormParam("encodedFile")
         @PartFilename("encodedFileFile")
+        // Forces OCTET_STREAM. https://quarkus.io/guides/rest-client-reactive#multipart
         @PartType(MediaType.APPLICATION_OCTET_STREAM)
         public String encodedFile;
     }
     @POST
     @Path("/user-profile-data")
-    @Consumes({"multipart/form-data"})
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
     void postUserProfileData(@BeanParam PostUserProfileDataMultipartForm multipartForm);
 
     class PostUserProfileDataMultipartForm {
         @FormParam("id")
         @PartType(MediaType.TEXT_PLAIN)
-        public UUID id;
+        public String id;
+
         @FormParam("address")
         @PartType(MediaType.APPLICATION_JSON)
         public Address address;
+
         @FormParam("profileImage")
         @PartFilename("profileImageFile")
         @PartType(MediaType.APPLICATION_OCTET_STREAM)

@@ -17,7 +17,6 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Base64;
-import java.util.UUID;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.containing;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
@@ -44,7 +43,7 @@ class UserProfileDataApiTest {
 
         UserProfileDataApi.PostUserProfileDataMultipartForm requestBody = new UserProfileDataApi.PostUserProfileDataMultipartForm();
         requestBody.address = new Address().street("Champs-Elysees").city("Paris");
-        requestBody.id = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
+        requestBody.id = "00112233-4455-6677-8899-aabbccddeeff";
         requestBody.profileImage = testFile;
 
         userProfileDataApi.postUserProfileData(requestBody);
@@ -53,13 +52,17 @@ class UserProfileDataApiTest {
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
                         // Primitive => text/plain
-                        .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.TEXT_PLAIN))
-                        .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build())
+                        .withHeader(ContentTypeHeader.KEY, equalTo("text/plain; charset=UTF-8"))
+                        .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build()));
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("address")
                         // Complex value => application/json
                         .withHeader(ContentTypeHeader.KEY, equalTo(MediaType.APPLICATION_JSON))
-                        .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build())
+                        .withBody(equalToJson("{\"street\":\"Champs-Elysees\", \"city\":\"Paris\"}")).build()));
+
+        multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("profileImage")
                         .withHeader("Content-Disposition", containing("filename="))
