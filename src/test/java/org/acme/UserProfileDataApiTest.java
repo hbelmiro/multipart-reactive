@@ -52,7 +52,7 @@ class UserProfileDataApiTest {
                 .withRequestBodyPart(new MultipartValuePatternBuilder()
                         .withName("id")
                         // Primitive => text/plain
-                        .withHeader(ContentTypeHeader.KEY, equalTo("text/plain; charset=UTF-8"))
+                        .withHeader(ContentTypeHeader.KEY, equalTo("text/plain"))
                         .withBody(equalTo("00112233-4455-6677-8899-aabbccddeeff")).build()));
 
         multipartServer.verify(postRequestedFor(urlEqualTo("/user-profile-data"))
