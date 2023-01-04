@@ -1,11 +1,11 @@
 package org.acme;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-import org.jboss.resteasy.reactive.PartFilename;
-import org.jboss.resteasy.reactive.PartType;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.jboss.resteasy.annotations.providers.multipart.PartFilename;
+import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -21,7 +21,7 @@ public interface UserProfileDataApi {
     @POST
     @Path("/base64")
     @Consumes({"multipart/form-data"})
-    void postBase64Data(@BeanParam PostBase64DataMultipartForm multipartForm);
+    void postBase64Data(@MultipartForm PostBase64DataMultipartForm multipartForm);
 
     class PostBase64DataMultipartForm {
         @FormParam("encodedFile")
@@ -33,7 +33,7 @@ public interface UserProfileDataApi {
     @POST
     @Path("/user-profile-data")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    void postUserProfileData(@BeanParam PostUserProfileDataMultipartForm multipartForm);
+    void postUserProfileData(@MultipartForm PostUserProfileDataMultipartForm multipartForm);
 
     class PostUserProfileDataMultipartForm {
         @FormParam("id")
