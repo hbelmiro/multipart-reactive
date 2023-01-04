@@ -1,3 +1,15 @@
+This project is a reproducer for https://github.com/quarkusio/quarkus/issues/23059#issuecomment-1370509160.
+
+The repository has two branches:
+* `main` branch has the RESTEasy Reactive code
+* `resteasy-classic` branch has the RESTEasy Classic code
+
+## How to reproduce
+
+Run `mvn clean verify`
+
+-----------
+
 # multipart-reactive Project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
